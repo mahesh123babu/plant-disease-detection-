@@ -1,11 +1,25 @@
-from flask import Flask, render_template,request,redirect,send_from_directory,url_for
+from flask import Flask, render_template, request, redirect, send_from_directory, url_for
 import numpy as np
 import json
 import uuid
 import tensorflow as tf
+import os
+import urllib.request
 
 app = Flask(__name__)
-model = tf.keras.models.load_model("models/plant_disease_recog_model_pwp.keras")
+
+model_path = "models/plant_disease_recog_model_pwp.keras"
+
+
+os.makedirs("models", exist_ok=True)
+
+
+if not os.path.exists(model_path):
+    print("Downloading 203MB model...")
+    url = "PASTE_YOUR_LINK_HERE"  
+    urllib.request.urlretrieve(url, model_path)
+
+model = tf.keras.models.load_model(model_path)
 label = ['Apple___Apple_scab',
  'Apple___Black_rot',
  'Apple___Cedar_apple_rust',
