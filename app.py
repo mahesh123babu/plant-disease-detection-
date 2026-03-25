@@ -8,18 +8,24 @@ import urllib.request
 
 app = Flask(__name__)
 
-model_path = "models/plant_disease_recog_model_pwp.keras"
+# Start with NO brain loaded so the website turns on instantly!
+model = None 
 
-
-os.makedirs("models", exist_ok=True)
-
-
-if not os.path.exists(model_path):
-    print("Downloading 203MB model...")
-    url = "https://github.com/mahesh123babu/plant-disease-detection-/releases/download/v1.0/plant_disease_recog_model_pwp.keras"
-    urllib.request.urlretrieve(url, model_path)
-
-model = tf.keras.models.load_model(model_path)
+def load_ai_brain():
+    global model
+    if model is None:
+        print("Loading AI Brain for the first time...")
+        model_path = "models/plant_disease_recog_model_pwp.keras"
+        os.makedirs("models", exist_ok=True)
+        
+        # Download if it doesn't exist yet
+        if not os.path.exists(model_path):
+            print("Downloading massive 203MB model...")
+            url = "https://github.com/mahesh123babu/plant-disease-detection-/releases/download/v1.0/plant_disease_recog_model_pwp.keras"
+            urllib.request.urlretrieve(url, model_path)
+            
+        model = tf.keras.models.load_model(model_path)
+        print("Brain loaded successfully!")
 label = ['Apple___Apple_scab',
  'Apple___Black_rot',
  'Apple___Cedar_apple_rust',
@@ -80,11 +86,11 @@ def extract_features(image):
     return feature
 
 def model_predict(image):
+    load_ai_brain()  # <--- ADD THIS LINE HERE! (Make sure it has 4 spaces in front)
+    
     img = extract_features(image)
     prediction = model.predict(img)
-    # print(prediction)
-    prediction_label = plant_disease[prediction.argmax()]
-    return prediction_label
+    
 
 @app.route('/upload/',methods = ['POST','GET'])
 def uploadimage():
