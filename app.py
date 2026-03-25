@@ -13,13 +13,13 @@ model = None
 
 def load_ai_brain():
     global model
-    if model is None:
+   if model is None:
         print("Loading AI Brain for the first time...")
         model_path = "models/plant_disease_recog_model_pwp.keras"
         os.makedirs("models", exist_ok=True)
         
-        # Download if it doesn't exist yet
-       if not os.path.exists(model_path):
+        # ALL THREE LINES BELOW MUST HAVE 8 SPACES IN FRONT:
+        if not os.path.exists(model_path):
             print("Downloading massive 203MB model...")
             url = "https://github.com/mahesh123babu/plant-disease-detection-/releases/download/v1.0/plant_disease_recog_model_pwp.keras"
             urllib.request.urlretrieve(url, model_path)
