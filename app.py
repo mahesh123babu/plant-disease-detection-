@@ -16,8 +16,8 @@ os.makedirs("models", exist_ok=True)
 
 if not os.path.exists(model_path):
     print("Downloading 203MB model...")
-    url = "PASTE_YOUR_LINK_HERE"  
-   https://github.com/mahesh123babu/plant-disease-detection-/releases/download/v1.0/plant_disease_recog_model_pwp.1.keras
+    url = "https://github.com/mahesh123babu/plant-disease-detection-/releases/download/v1.0/plant_disease_recog_model_pwp.keras"
+    urllib.request.urlretrieve(url, model_path)
 
 model = tf.keras.models.load_model(model_path)
 label = ['Apple___Apple_scab',
